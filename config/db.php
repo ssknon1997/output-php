@@ -1,6 +1,6 @@
 <?php
 
-$dsn = "mysql:host=localhost;dbname=bbs;charset=utf8mb4";
+$dsn = "mysql:host=localhost;dbname=bbs;charset=utf8mb4"; 
 $user = "root";
 $password = "root";
 
@@ -12,7 +12,7 @@ try {
 } catch(PDOException $e) {
 
     echo "DB接続失敗";
-    $e->getMessage();
+    $e->getMessage(); //どういうエラーが出てるのかを表示
     exit;
 
 }
