@@ -12,8 +12,8 @@ try {
 } catch(PDOException $e) {
 
     echo "DB接続失敗";
-    $e->getMessage(); //どういうエラーが出てるのかを表示
-    exit;
+    die($e->getMessage()); //どういうエラーが出てるのかを表示
+    
 
 }
 
