@@ -18,4 +18,11 @@ CREATE TABLE posts (
     FOREIGN KEY (user_id) REFERENCES users(id) --usersテーブルに存在しないidを紐づけできないようにする -- 
 );
 
+CREATE TABLE likes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id,
+    post_id,
 
+    UNIQUE(user_id,post_id)
+
+);
