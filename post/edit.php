@@ -2,6 +2,11 @@
 
 session_start();
 require_once('../config/db.php');
+require_once('../includes.function.php');
+
+requireLogin();
+verifyCsrfToken();
+
 
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 

@@ -1,10 +1,10 @@
 <?php
 session_start(); 
 
-if(empty($_SESSION['csrf_token'])) { //SESSIONにトークンがなければユーザーごとにランダムなトークンを生成
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
+
+
 ?>
+
 
 <header>
 
