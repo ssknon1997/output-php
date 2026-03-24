@@ -1,31 +1,23 @@
 <?php
-session_start(); 
-
-
-
+// session_startを呼んでください
 ?>
 
+<!-- headerタグを書いてください -->
 
-<header>
+    <!-- h1タグで「掲示板」と表示してください -->
 
-<h1>掲示板</h1>
+    <!-- navタグを書いてください -->
 
-<nav>
+        <!-- $_SESSION['user']が存在する場合は
+             index.phpへの「掲示板」リンクと
+             auth/logout.phpへの「ログアウト」リンクを表示してください -->
 
-<?php if(isset($_SESSION['user'])): ?> <!--$_SESSION['user'] に情報が入っているか入っていない場合ログイン新規登録のページリンク -->
+        <!-- 存在しない場合は
+             auth/login.phpへの「ログイン」リンクと
+             auth/register.phpへの「新規登録」リンクを表示してください -->
 
-<a href="index.php">掲示板</a>
-<a href="auth/logout.php">ログアウト</a>
+    <!-- navタグを閉じてください -->
 
-<?php else: ?> 
+    <!-- hrタグでページの区切り線を引いてください -->
 
-<a href="auth/login.php">ログイン</a>
-<a href="auth/register.php">新規登録</a>
-
-<?php endif; ?>
-
-</nav> 
-
-<hr> <!--ページの区切りとして横線を引く -->
-
-</header>
+<!-- headerタグを閉じてください -->

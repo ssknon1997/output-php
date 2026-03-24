@@ -1,35 +1,25 @@
 <?php
+// session_startを呼んでください
 
-session_start();
-require_once('../config/db.php');
+// ../config/db.phpをrequire_onceで読み込んでください
 
-if(!isset($_SESSION['user'])) {
-    header('Location: ../index.php');
-    exit;
-}
+// $_SESSION['user']が存在しない場合、../index.phpにリダイレクトしてexitしてください
 
-$post_id = filter_input(INPUT_POST, 'post_id', FILTER_VALIDATE_INT);
-$user_id = $_SESSION['user']['id'];
+// filter_inputでINPUT_POSTからpost_idをFILTER_VALIDATE_INTで取得して$post_idに入れてください
 
-if(!$post_id) {
-    header('Location: ../index.php');
-    exit;
-}
+// $_SESSION['user']['id']を$user_idに入れてください
 
-$stmt = $pdo->prepare('SELECT id FROM likes WHERE user_id=? AND post_id=?');
-$stmt->execute([$user_id, $post_id]);
+// $post_idが取得できなかった場合、../index.phpにリダイレクトしてexitしてください
 
-if ($stmt->fetch()) {
-    $stmt = $pdo->prepare(
-        'DELETE FROM likes WHERE user_id=? AND post_id=?'
-    );
-    $stmt->execute([$user_id, $post_id]);
-} else {
-    $stmt = $pdo->prepare(
-        'INSERT INTO likes (user_id ,post_id) VALUES (?,?)'
-    );
-    $stmt->execute([$user_id, $post_id]);
-}
+// likesテーブルからuser_idとpost_idが一致するレコードを取得するSQLを書いてください
+// プリペアドステートメントを使ってください
 
-header('Location: ../index.php');
-exit;
+// fetchで結果が取得できた場合（すでにいいね済み）
+    // likesテーブルからuser_idとpost_idが一致するレコードをDELETEしてください
+    // プリペアドステートメントを使ってください
+
+// 取得できなかった場合（まだいいねしていない）
+    // likesテーブルにuser_idとpost_idをINSERTしてください
+    // プリペアドステートメントを使ってください
+
+// ../index.phpにリダイレクトしてexitしてください

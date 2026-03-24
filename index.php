@@ -1,113 +1,87 @@
 <?php
+// session_startを呼んでください
 
-session_start();
+// config/db.phpをrequire_onceで読み込んでください
+// includes/function.phpをrequire_onceで読み込んでください
+// header.phpをrequire_onceで読み込んでください
 
-require_once('config/db.php');
-require_once('includes/function.php');
-require_once('header.php');
+// generateCsrfToken()でトークンを生成して$tokenに入れてください
 
-$token = generateCsrfToken();
+// $_SESSION['user']が存在する場合だけ以下の処理を行ってください
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+    // $limitに1ページの表示件数5を入れてください
 
-if(isset($_SESSION['user'])):
+    // $_GET["page"]が存在すれば$pageに入れ、なければ1を入れてください
+    // （三項演算子を使ってください）
 
-$limit = 5;
+    // $offsetを計算してください（何件目からデータを取るか）
 
-$page = max(1, (int)($_GET['page'] ?? 1));
-$offset = ($page - 1) * $limit;
+    // postsの全カラム、usersのname、likesのいいね数（like_countとして）を取得するSQLを書いてください
+    // postsとusersをJOINしてください（posts.user_id = users.id）
+    // postsとlikesをLEFT JOINしてください（posts.id = likes.post_id）
+    // GROUP BY posts.idでまとめてください
+    // ORDER BY posts.created_atの降順にしてください
+    // LIMITとOFFSETでページネーションしてください（プリペアドステートメントを使ってください）
 
-$sql = 'SELECT posts.*,
-        users.name,
-        COUNT(likes.id) as like_count
-        FROM posts
-        JOIN users ON posts.user_id = users.id
-        LEFT JOIN likes ON posts.id = likes.post_id
-        GROUP BY posts.id
-        ORDER BY posts.created_at DESC
-        LIMIT :limit OFFSET :offset';
-
-$stmt = $pdo->prepare($sql);
-$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-$stmt->execute();
-
-$posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // SQLを実行して結果を$postsに入れてください
 ?>
 
+<!-- h2タグで「投稿」と表示してください -->
 
+<!-- $_SESSION['user']が存在する場合だけフォームを表示してください -->
+    <!-- post/create.phpにPOSTで送るformタグを書いてください -->
+    <!-- enctype="multipart/form-data"をつけてください（画像送信のため） -->
 
-<h2>投稿</h2>
+        <!-- CSRFトークンをhiddenで埋め込んでください -->
 
-<?php if(isset($_SESSION['user'])): ?> <!--userが入っていれば投稿できる -->
+        <!-- contentという名前のtextareaを書いてください -->
 
-<form action="post/create.php" method="POST" enctype="multipart/form-data"> <!--投稿ボタンを押すとcreate.phpに情報が送られる -->
-        
-        <input type="hidden" name="csrf_token" value="<?= $token?>">
+        <!-- imageという名前のfile inputを書いてください -->
 
-        <textarea name="content" placeholder="投稿する文字を入力してください"></textarea>
-        <p><input type="file"  name="image" ></p>
+        <!-- 送信ボタンを書いてください -->
 
+    <!-- formタグを閉じてください -->
+<!-- endif -->
 
-        <button>投稿</button>
+<!-- h2タグで「投稿一覧」と表示してください -->
 
-</form>
+<!-- foreachで$postsを$postとして1件ずつ取り出してください -->
 
-<?php endif; ?>
+    <!-- divタグで囲んでください -->
 
-<h2>投稿一覧</h2>
+        <!-- h()でXSS対策しながら投稿者名を表示してください -->
 
-<?php foreach($posts as $post): ?> <!--上で取り出したすべてのレコードを$postに入れて一つずつ取り出す-->
+        <!-- h()でXSS対策しながら投稿内容を表示してください -->
 
-<div>
+        <!-- $post['image']が存在する場合だけimgタグで画像を表示してください -->
+        <!-- src="uploads/画像ファイル名"、width="200"にしてください -->
 
-<p><?php echo h($post['name']); ?></p> <!--postで受け取った名前に変な文字列が含まれていればXSS対策としてHTMLエスケープ-->
+        <!-- h()でXSS対策しながら作成日時を表示してください -->
 
-<p><?php echo h($post['content']); ?></p> <!--// 投稿内容をXSS対策としてエスケープ-->
+        <!-- $_SESSION['user']が存在しかつログインユーザーと投稿者が一致する場合だけ
+             post/delete.phpへの削除リンクを表示してください
+             URLに?id=投稿IDをつけてください -->
 
-<p><?php if($post['image']): ?>
+        <!-- post/like.phpにPOSTで送るformタグを書いてください -->
+            <!-- post_idをhiddenで埋め込んでください -->
+            <!-- いいねボタンを書いてください -->
+        <!-- formタグを閉じてください -->
 
-        <img src="uploads/<?= h($post['image']); ?>" width="200">
+        <!-- いいね数を表示してください -->
 
-<?php endif ?>
-<p><?php echo h($post['created_at']); ?></p> <!-- 作成日時も念のためエスケープ-->
+    <!-- divタグを閉じてください -->
 
+    <!-- hrタグで区切り線を引いてください -->
 
-<?php if(isset($_SESSION['user']) && $_SESSION['user']['id'] == $post['user_id']): ?> <!--sessionのuserが入っているかつログイン中のユーザーと投稿者が一致する場合のみ削除可能-->
-
-<a href="post/delete.php?id=<?php echo h($post['id']); ?>">削除</a>
-
-
-<?php endif; ?>
-
-
-<form action="post/like.php" method="POST">
-    <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
-    <button type="submit">いいね</button>
-</form>
-<p>いいね数: <?php echo $post["like_count"]; ?></p>
-
-
-</div>
-
-<hr>
-
-<?php endforeach; ?>
-
+<!-- endforeachを書いてください -->
 
 <?php
+// postsテーブルの総件数をCOUNT(*)で取得して$totalに入れてください
 
-$total = $pdo->query("SELECT COUNT(*) FROM posts")->fetchColumn();
+// $total_pageを計算してください（ceil()で切り上げてください）
 
-$total_page = ceil($total / $limit);
-
-for($i=1;$i<=$total_page;$i++){
-
-echo "<a href='?page=$i'>$i</a> ";
-
-}
-
+// forループでページ番号リンクを表示してください
+// <a href='?page=ページ番号'>ページ番号</a>の形式で出力してください
 ?>
 
-<?php endif; ?>
+<!-- $_SESSION['user']のendifを書いてください -->

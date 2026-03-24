@@ -1,19 +1,12 @@
 <?php
+// DSN文字列を作成してください
+// host=localhost、port=8889、dbname=bbs、charset=utf8mb4
 
-$dsn = "mysql:host=localhost;port=8889;dbname=bbs;charset=utf8mb4"; 
-$user = "root";
-$password = "root";
 
-try {
-    $pdo = new PDO($dsn, $user, $password);
+// DBのユーザー名とパスワードを変数に入れてください
 
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //PDOExceptionにエラーをthrowしている(catchでエラーを受け取れるようにしている)
 
-} catch(PDOException $e) {
-
-    echo "DB接続失敗";
-    die($e->getMessage()); //どういうエラーが出てるのかを表示
-    
-}
-
-?>
+// tryを使ってPDOでDB接続してください
+// catchでPDOExceptionを受け取り、エラーメッセージをログに記録して
+// ユーザーにはシンプルなメッセージだけ表示してください
+// PDO::ATTR_ERRMODEをPDO::ERRMODE_EXCEPTIONに設定してください

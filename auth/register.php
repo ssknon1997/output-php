@@ -1,36 +1,41 @@
 <?php
+// session_startを呼んでください
 
-require_once('../config/db.php');
+// ../config/db.phpをrequire_onceで読み込んでください
+// ../includes/function.phpをrequire_onceで読み込んでください
 
-if($_SERVER["REQUEST_METHOD"] === "POST") { //名前,メール,パスワードがPOSTで送信されたらifの中の処理が実行される
+// generateCsrfToken()でトークンを生成して$tokenに入れてください
 
-$name = $_POST["name"]; //$_POST['name']はinputタグのname属性で受け取った値が入っている
-$email = $_POST['email']; //入力された情報をSQLに後で追加するために変数にいれる
-$password = password_hash($_POST['password'], PASSWORD_DEFAULT); //sqlに保存する際に入力された値をハッシュ化してsqlを見られてもパスワードがバレないようにする
+// $_SERVER["REQUEST_METHOD"]がPOSTの場合だけ以下の処理をしてください
 
-$sql = "INSERT INTO users(name, email, password) VALUES(?, ?, ?)"; //sqlに今入力された情報をusersテーブルの中のname,email,passwordカラムにプレースホルダで追加している
+    // verifyCsrfToken()でCSRFトークンを検証してください
 
-$stmt = $pdo->prepare($sql); //prepareで引数に$sqlを指定して中に書いたINSERT文を実行するための準備をしている(SQLインジェクション対策)
-$stmt->execute([$name, $email, $password]); //executeで引数に先程のusersテーブルのカラム順と同じ用にプレースホルダに合う変数を指定してsqlを実行している
+    // $_POST["name"]を$nameに入れてください
 
-header("Location: login.php"); //headerで入力が完了したらlogin.phpへ移動する
+    // $_POST["email"]を$emailに入れてください
 
-}
+    // $_POST["password"]をpassword_hashでハッシュ化して$passwordに入れてください
+    // PASSWORD_DEFAULTを使ってください
+
+    // usersテーブルにname、email、passwordをINSERTするSQLを書いてください
+    // プリペアドステートメントを使ってください
+
+    // login.phpにリダイレクトしてexitしてください
 
 ?>
 
-<h2>新規登録</h2>
+<!-- h2タグで「新規登録」と表示してください -->
 
-<form method="POST">
+<!-- POSTで送信するformタグを書いてください -->
 
-    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+    <!-- CSRFトークンをhiddenで埋め込んでください -->
 
-    <input type="text" name="name" placeholder="名前"> <!--placeholder:何も入力していないときに表示される入力するべき情報のヒント -->
+    <!-- text型のinputを書いてください（name属性はname、placeholder「名前」） -->
 
-    <input type="email" name="email" placeholder="メール"> <!--placeholder:何も入力していないときに表示される入力するべき情報のヒント -->
+    <!-- email型のinputを書いてください（name属性はemail、placeholder「メール」） -->
 
-    <input type="password" name="password" placeholder="パスワード"> <!--placeholder:何も入力していないときに表示される入力するべき情報のヒント -->
+    <!-- password型のinputを書いてください（name属性はpassword、placeholder「パスワード」） -->
 
-    <button>登録</button>
+    <!-- 登録ボタンを書いてください -->
 
-</form>
+<!-- formタグを閉じてください -->

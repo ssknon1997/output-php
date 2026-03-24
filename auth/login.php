@@ -1,44 +1,36 @@
 <?php
+// session_startを呼んでください
 
-session_start();
+// ../config/db.phpをrequire_onceで読み込んでください
 
-require_once("../config/db.php");
+// $_SERVER["REQUEST_METHOD"]がPOSTの場合だけ以下の処理をしてください
 
-if($_SERVER["REQUEST_METHOD"] === "POST") {
+    // filter_inputでINPUT_POSTからemailを取得して$emailに入れてください
 
-    $email = filter_input(INPUT_POST, 'email'); //POSTで送信されたemailの値を変数に入れている（フィルタ処理も可能）
-    $password = filter_input(INPUT_POST, 'password'); //POSTで送信されたpasswordの値を変数に入れている（フィルタ処理も可能）
+    // filter_inputでINPUT_POSTからpasswordを取得して$passwordに入れてください
 
-    $sql = "SELECT * FROM users WHERE email= ? "; // usersテーブルから入力されたemailと一致するユーザーを取得する
+    // usersテーブルからemailが一致するレコードを取得するSQLを書いてください
+    // プリペアドステートメントを使ってください
+    // 結果を$userに入れてください（fetch・連想配列で取得）
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$email]); // SQLを実行し、プレースホルダに$emailをバインド(データと結びつける)する
+    // $userが存在し、かつpassword_verifyでパスワードが一致する場合
+        // $_SESSION['user']に$userを入れてください
+        // session_regenerate_idでセッションIDを再生成してください（固定化攻撃対策）
+        // ../index.phpにリダイレクトしてexitしてください
 
-    $user = $stmt->fetch(PDO::FETCH_ASSOC); // 一致したユーザーの1レコードを連想配列で取得
-
-    if($user && password_verify($password, $user['password'])) { //$userに値が入っているかつpassword_verifyで入力パスワードとDBのハッシュ化パスワードが一致した場合
-        $_SESSION['user'] = $user; // ログインしたユーザー情報をセッションに保存
-
-        header("Location: ../index.php");
-        exit;
-
-    } else {
-
-        echo 'ログイン失敗'; // ユーザーが存在しない、またはパスワードが一致しない場合
-
-    }
-}
+    // 一致しない場合
+        // 「ログイン失敗」と表示してください
 
 ?>
 
-<h2>ログイン</h2>
+<!-- h2タグで「ログイン」と表示してください -->
 
-<form method="POST">
+<!-- POSTで送信するformタグを書いてください -->
 
-    <input type="email" name="email">
+    <!-- email型のinputを書いてください -->
 
-    <input type="password" name="password">
+    <!-- password型のinputを書いてください -->
 
-    <button>ログイン</button>
-    
-</form>
+    <!-- ログインボタンを書いてください -->
+
+<!-- formタグを閉じてください -->

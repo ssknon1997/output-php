@@ -1,38 +1,25 @@
 <?php
+// session_startを呼んでください
 
-session_start();
-require_once('../config/db.php');
-require_once('../includes/function.php');
+// ../config/db.phpをrequire_onceで読み込んでください
+// ../includes/function.phpをrequire_onceで読み込んでください
 
-requireLogin();
-verifyCsrfToken();
+// requireLogin()でログインチェックしてください
 
-$content = filter_input(INPUT_POST, 'content');
-$filename = null;
+// verifyCsrfToken()でCSRFトークンを検証してください
 
-if(!$content) {
-    redirect('../index.php');
-}
+// filter_inputでINPUT_POSTからcontentを取得して$contentに入れてください
 
-if(!empty($_FILES['image']['name'])) {
-    $filename = time(). "_" . $_FILES['image']['name'];
+// $filenameをnullで初期化してください
 
-    move_uploaded_file(
-        $_FILES['image']['tmp_name'],
-        "../uploads/" . $filename
-    );
-}
+// $contentが空ならindex.phpにリダイレクトしてください
 
-$sql = "INSERT INTO posts(user_id, content, image) VALUES(?, ?, ?)"; 
+// $_FILES['image']['name']が空でない場合、以下の処理をしてください
+    // time()と元のファイル名を組み合わせたファイル名を$filenameに入れてください
+    // move_uploaded_fileで../uploads/ディレクトリに画像を移動してください
 
-$stmt = $pdo->prepare($sql);
-$stmt->execute([
-    $_SESSION['user']['id'],  //sessionのuser配列の中のidをプレースホルダに入力
-    $content,
-    $filename
-]);
+// postsテーブルにuser_id、content、imageをINSERTするSQLを書いてください
+// プリペアドステートメントを使ってください
+// $_SESSION['user']['id']、$content、$filenameを渡してください
 
-
-header("Location: ../index.php");
-
-?>
+// ../index.phpにリダイレクトしてexitしてください

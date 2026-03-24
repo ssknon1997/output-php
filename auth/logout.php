@@ -1,8 +1,6 @@
 <?php
+// session_startを呼んでください
 
-session_start();
+// session_destroyでセッション情報を削除してください
 
-session_destroy(); //sessionの情報を削除
-
-header("Location: login.php");
-exit;
+// auth/login.phpにリダイレクトしてexitしてください

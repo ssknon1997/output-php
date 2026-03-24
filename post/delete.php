@@ -1,24 +1,15 @@
 <?php
+// session_startを呼んでください
 
-session_start();
+// ../config/db.phpをrequire_onceで読み込んでください
 
-require_once('../config/db.php');
+// $_SESSION['user']が存在しない場合、../auth/login.phpにリダイレクトしてexitしてください
 
-if (!isset($_SESSION['user'])) { //ログインしていないユーザがURLから削除できないように
-    header('Location: ../auth/login.php');
-    exit;
-}
+// filter_inputでINPUT_GETからidをFILTER_VALIDATE_INTで取得して$idに入れてください
 
-$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT); // URLのクエリパラメータ（?id=○○）から投稿IDを取得
+// postsテーブルからidとuser_idが一致するレコードをDELETEするSQLを書いてください
+// 自分の投稿以外は削除できないようにWHERE id=? AND user_id=?にしてください
+// プリペアドステートメントを使ってください
+// $idと$_SESSION['user']['id']を渡してください
 
-$sql = "DELETE FROM posts WHERE id=? AND user_id=?"; // 投稿IDが一致し、かつログインユーザーのIDと一致する場合のみ削除
-
-$stmt = $pdo->prepare($sql);
-
-$stmt->execute([
-    $id,
-    $_SESSION['user']['id']
-]);
-
-header('Location: ../index.php');
-exit;
+// ../index.phpにリダイレクトしてexitしてください

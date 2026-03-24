@@ -1,29 +1,18 @@
-CREATE DATABASE bbs; -- bbsという名前のデータベースを作成 --
+-- bbsという名前のデータベースを作成してください
 
-USE bbs; -- bbsテーブルを使用する --
+-- bbsデータベースを使用する宣言を書いてください
 
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY, --idカラム作成　整数　自動で番号振り分け　このテーブルで唯一のキー --
-    name VARCHAR(50), --決まった文字数まで入れれる --
-    email VARCHAR(100) UNIQUE, --決まった文字数まで入れれる　重複禁止 --
-    password VARCHAR(255), --決まった文字数まで入れれる　パスワードハッシュで長くなる可能性があるので文字数制限多め --
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP --タイムスタンプ　現在の時間をいれる --
-);
+-- usersテーブルを作成してください
+-- カラム：id（整数・自動採番・主キー）、name（50文字まで）、email（100文字まで・重複禁止）
+-- password（255文字まで）、created_at（現在日時をデフォルト値にするタイムスタンプ）
 
-CREATE TABLE posts (
-    id INT AUTO_INCREMENT PRIMARY KEY, --idカラム作成　整数　自動で番号振り分け　このテーブルで唯一のキー --
-    user_id INT, --決まった文字数まで入れれる --
-    content TEXT, --長い文章を入れれる --
-    image VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, --タイムスタンプ　現在の時間をいれる --
-    FOREIGN KEY (user_id) REFERENCES users(id) --usersテーブルに存在しないidを紐づけできないようにする -- 
-);
 
-CREATE TABLE likes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    post_id INT NOT NULL,
+-- postsテーブルを作成してください
+-- カラム：id（整数・自動採番・主キー）、user_id（整数）、content（長文テキスト）
+-- image（255文字まで）、created_at（現在日時をデフォルト値にするタイムスタンプ）
+-- user_idはusersテーブルのidと外部キーで紐づけてください
 
-    UNIQUE(user_id,post_id) --user_id と post_id の組み合わせが同じ行を禁止する --
 
-);
+-- likesテーブルを作成してください
+-- カラム：id（整数・自動採番・主キー）、user_id（整数・NOT NULL）、post_id（整数・NOT NULL）
+-- user_idとpost_idの組み合わせが重複しないようにUNIQUE制約をつけてください

@@ -1,19 +1,20 @@
 <?php
+// session_startを呼んでください
 
-session_start();
-require_once('../config/db.php');
+// ../config/db.phpをrequire_onceで読み込んでください
+// ../includes/function.phpをrequire_onceで読み込んでください
 
-$id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-$content = filter_input(INPUT_POST, 'content');
+// requireLogin()でログインチェックしてください
 
-$sql = "UPDATE posts SET content=? WHERE id=? AND user_id=?"; //postsテーブルのcontent更新するするためにPOST送信されたidとuser_idが合うレコードを更新する
+// verifyCsrfToken()でCSRFトークンを検証してください
 
-$stmt = $pdo->prepare($sql);
+// filter_inputでINPUT_POSTからidをFILTER_VALIDATE_INTで取得して$idに入れてください
 
-$stmt->execute([
-    $content,
-    $id,
-    $_SESSION['user']['id']
-]);
+// filter_inputでINPUT_POSTからcontentを取得して$contentに入れてください
 
-header("Location: ../index.php");
+// postsテーブルのcontentをUPDATEするSQLを書いてください
+// WHERE id=? AND user_id=?で自分の投稿のみ更新できるようにしてください
+// プリペアドステートメントを使ってください
+// $content、$id、$_SESSION['user']['id']を渡してください
+
+// ../index.phpにリダイレクトしてexitしてください

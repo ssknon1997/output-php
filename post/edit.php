@@ -1,34 +1,28 @@
 <?php
+// session_startを呼んでください
 
-session_start();
-require_once('../config/db.php');
-require_once('../includes.function.php');
+// ../config/db.phpをrequire_onceで読み込んでください
+// ../includes/function.phpをrequire_onceで読み込んでください
 
-requireLogin();
-verifyCsrfToken();
+// requireLogin()でログインチェックしてください
 
+// filter_inputでINPUT_GETからidをFILTER_VALIDATE_INTで取得して$idに入れてください
 
-$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-
-$sql = "SELECT * FROM posts WHERE id = ?";
-
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$id]);
-
-$post = $stmt->fetch(PDO::FETCH_ASSOC);
-
+// postsテーブルからidが一致するレコードを1件取得するSQLを書いてください
+// プリペアドステートメントを使ってください
+// 結果を$postに入れてください（fetch・連想配列で取得）
 ?>
 
-<h2>投稿編集</h2>
+<!-- h2タグで「投稿編集」と表示してください -->
 
-<form action="update.php" method="POST">
+<!-- post/update.phpにPOSTで送るformタグを書いてください -->
 
-    <input type="hidden" name="id" value="<?php echo htmlspecialchars($post['id']); ?>" >
+    <!-- CSRFトークンをhiddenで埋め込んでください -->
 
-    <textarea name="content">
-        <?php echo htmlspecialchars($post['content']); ?>
-    </textarea>
+    <!-- idをhiddenで埋め込んでください（htmlspecialcharsでXSS対策してください） -->
 
-    <button>更新</button>
+    <!-- contentをtextareaで表示してください（htmlspecialcharsでXSS対策してください） -->
 
-</form>
+    <!-- 更新ボタンを書いてください -->
+
+<!-- formタグを閉じてください -->
