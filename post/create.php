@@ -22,7 +22,7 @@ if(!$content) {
     // move_uploaded_fileで../uploads/ディレクトリに画像を移動してください
 if(!empty($_FILES['image']['name'])) {
     $filename = time() . '_' . $_FILES['image']['name'];
-    move_uploaded_file($_FILES['image']['name'], '../uploads/' .$filename);
+    move_uploaded_file($_FILES['image']['tmp_name'], '../uploads/' .$filename);
 } 
 // postsテーブルにuser_id、content、imageをINSERTするSQLを書いてください
 // プリペアドステートメントを使ってください
