@@ -56,6 +56,6 @@ function getPostInt(string $key) : int
 // headerでLocationを指定してexitしてください
 function redirect(string $url) :never
 {
-    header('Location: index.php');
+    header('Location:' . $url);
     exit();
 }
