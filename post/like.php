@@ -3,6 +3,7 @@
 session_start();
 // ../config/db.phpをrequire_onceで読み込んでください
 require_once('../config/db.php');
+require_once('../includes/function.php');
 // $_SESSION['user']が存在しない場合、../index.phpにリダイレクトしてexitしてください
 requireLogin();
 // filter_inputでINPUT_POSTからpost_idをFILTER_VALIDATE_INTで取得して$post_idに入れてください
@@ -24,7 +25,7 @@ $like = $stmt->fetch(PDO::FETCH_ASSOC);
     // likesテーブルからuser_idとpost_idが一致するレコードをDELETEしてください
     // プリペアドステートメントを使ってください
 if($like) {
-    $sql = "DELETE FROM likes WHERE= user_id=? AND post_id=?";
+    $sql = "DELETE FROM likes WHERE user_id=? AND post_id=?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         $user_id,

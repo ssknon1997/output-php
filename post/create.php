@@ -20,9 +20,9 @@ if(!$content) {
 // $_FILES['image']['name']が空でない場合、以下の処理をしてください
     // time()と元のファイル名を組み合わせたファイル名を$filenameに入れてください
     // move_uploaded_fileで../uploads/ディレクトリに画像を移動してください
-if(isset($_FILES['image']['name'])) {
-    $filename = time() . '_' . $_FILES['file']['tmp_name'];
-    move_uploaded_file('../uploads/' .$filename);
+if(!empty($_FILES['image']['name'])) {
+    $filename = time() . '_' . $_FILES['image']['name'];
+    move_uploaded_file($_FILES['image']['name'], '../uploads/' .$filename);
 } 
 // postsテーブルにuser_id、content、imageをINSERTするSQLを書いてください
 // プリペアドステートメントを使ってください

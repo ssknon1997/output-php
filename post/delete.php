@@ -3,10 +3,11 @@
 session_start();
 // ../config/db.phpをrequire_onceで読み込んでください
 require_once('../config/db.php');
+require_once('../includes/functions.php');
 // $_SESSION['user']が存在しない場合、../auth/login.phpにリダイレクトしてexitしてください
 requireLogin();
 // filter_inputでINPUT_GETからidをFILTER_VALIDATE_INTで取得して$idに入れてください
-$id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 // postsテーブルからidとuser_idが一致するレコードをDELETEするSQLを書いてください
 // 自分の投稿以外は削除できないようにWHERE id=? AND user_id=?にしてください
 // プリペアドステートメントを使ってください

@@ -22,13 +22,13 @@ $post = $stmt->fetch(PDO::FETCH_ASSOC);
 <!-- h2タグで「投稿編集」と表示してください -->
 <h2>投稿編集</h2>
 <!-- post/update.phpにPOSTで送るformタグを書いてください -->
-<form method="POST">
+<form action="post/update.php" method="POST">
     <!-- CSRFトークンをhiddenで埋め込んでください -->
     <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'];?>">
     <!-- idをhiddenで埋め込んでください（htmlspecialcharsでXSS対策してください） -->
     <input type="hidden" name="id" value="<?= h($id);?>">
     <!-- contentをtextareaで表示してください（htmlspecialcharsでXSS対策してください） -->
-    <textarea name="content" id="<?= h($id); ?>"></textarea>
+    <textarea name="content"><?= h($post['content']); ?></textarea>
     <!-- 更新ボタンを書いてください -->
      <button>更新</button>
 </form>

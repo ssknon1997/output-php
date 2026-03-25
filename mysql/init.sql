@@ -23,6 +23,7 @@ CREATE TABLE posts (
     content TEXT,
     image VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    FOREIGN KEY (user_id) REFERENCES(id)
 );
 
 -- likesテーブルを作成してください

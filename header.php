@@ -14,7 +14,7 @@ session_start();
              auth/logout.phpへの「ログアウト」リンクを表示してください -->
         <?php if(isset($_SESSION['user'])): ?>
             <a href="index.php">掲示板</a>
-            <a href="auth/login.php">ログアウト</a>
+            <a href="auth/logout.php">ログアウト</a>
         <?php else: ?>
         <!-- 存在しない場合は
              auth/login.phpへの「ログイン」リンクと

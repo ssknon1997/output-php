@@ -15,7 +15,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 結果を$userに入れてください（fetch・連想配列で取得）
     $sql = "SELECT * FROM users WHERE email=?";
     $stmt = $pdo->prepare($sql);
-    $stnt->execute([$email]);
+    $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     // $userが存在し、かつpassword_verifyでパスワードが一致する場合
         // $_SESSION['user']に$userを入れてください

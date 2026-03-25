@@ -15,8 +15,8 @@ function h($value) : string
 // $_SESSION['user']がなければredirect()でlogin.phpに飛ばしてください
 function requireLogin() : void
 {
-    if(isset($_SESSION['user'])) {
-        redirect('login.php');
+    if(!isset($_SESSION['user'])) {
+        redirect('../auth/login.php');
     }
 }
 // generateCsrfToken()関数を作成してください
@@ -27,6 +27,7 @@ function generateCsrfToken() :string
 {
     $token = bin2hex(random_bytes(32));
     $_SESSION['csrf_token'] = $token;
+    return $token;
 }
 // verifyCsrfToken()関数を作成してください
 // 戻り値の型はvoidです
@@ -35,7 +36,8 @@ function generateCsrfToken() :string
 // redirect()でindex.phpに飛ばしてください
 function verifyCsrfToken() :void
 {
-    if(!$_POST['csrf_token'] && !hash_equls($_SESSION['csrf_token'], $_POST['csrf_token'] )) {
+    $token = $_POST['csrf_token'] ?? null;
+    if(!$token || !hash_equals($_SESSION['csrf_token'], $token)) {
         redirect('index.php');
     } 
 }
@@ -45,11 +47,12 @@ function verifyCsrfToken() :void
 // falseまたはnullならredirect()でindex.phpに飛ばしてください
 function getPostInt(string $key) : int
 {
-    filter_input(INPUT_POST, $key, FILTER_VALIDATE_INT);
+    $value = filter_input(INPUT_POST, $key, FILTER_VALIDATE_INT);
 
-    if(!$key) {
-        redirect('index.php');
+    if($value === false || $value === null) {
+        redirect('../index.php');
     }
+    return $value;
 }
 // redirect()関数を作成してください
 // 引数：$url（string）、戻り値：never

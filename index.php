@@ -10,7 +10,7 @@ require_once('header.php');
 // generateCsrfToken()でトークンを生成して$tokenに入れてください
 $token = generateCsrfToken();
 // $_SESSION['user']が存在する場合だけ以下の処理を行ってください
-if(isset($_SESSION['user'])); {
+if(isset($_SESSION['user'])) {
     // $limitに1ページの表示件数5を入れてください
     $limit = 5;
     // $_GET["page"]が存在すれば$pageに入れ、なければ1を入れてください
@@ -24,7 +24,7 @@ if(isset($_SESSION['user'])); {
     // GROUP BY posts.idでまとめてください
     // ORDER BY posts.created_atの降順にしてください
     // LIMITとOFFSETでページネーションしてください（プリペアドステートメントを使ってください）
-    $sql = "SELECT posts.* , users.name, COUNT(likes.*) AS like_count
+    $sql = "SELECT posts.* , users.name, COUNT(likes.id) AS like_count
             FROM posts
             JOIN users ON posts.user_id = users.id
             LEFT JOIN likes ON posts.id = likes.post_id
@@ -32,7 +32,8 @@ if(isset($_SESSION['user'])); {
             ORDER BY posts.created_at DESC
             LIMIT :limit OFFSET :offset";
     $stmt = $pdo->prepare($sql);
-    $stmt = bindValue($limit, $offset);
+    $stmt = bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt = bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
     // SQLを実行して結果を$postsに入れてください
     $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -70,7 +71,7 @@ if(isset($_SESSION['user'])); {
     <p><?= h($post['content']); ?></p>
         <!-- $post['image']が存在する場合だけimgタグで画像を表示してください -->
         <!-- src="uploads/画像ファイル名"、width="200"にしてください -->
-    <?php if(isset($post[image])): ?>
+    <?php if(isset($post['image'])): ?>
         <p><img src="uploads/<?= $post['image']?>" width="200"></p>
     <?php endif; ?>
         <!-- h()でXSS対策しながら作成日時を表示してください -->
@@ -78,19 +79,19 @@ if(isset($_SESSION['user'])); {
         <!-- $_SESSION['user']が存在しかつログインユーザーと投稿者が一致する場合だけ
              post/delete.phpへの削除リンクを表示してください
              URLに?id=投稿IDをつけてください -->
-    <?php if(isset($_SESSION['user']) && $_SESSION['user']['id'] || $post['user_id']): ?>
-        <a href="post/delete.php?=<?=$post['id']; ?>">削除</a>
+    <?php if(isset($_SESSION['user']) && $_SESSION['user']['id'] === $post['user_id']): ?>
+        <a href="post/delete.php?id=<?= h($post['id']); ?>">削除</a>
     <?php endif; ?>
         <!-- post/like.phpにPOSTで送るformタグを書いてください -->
     <form action="post/like.php" method="POST">
             <!-- post_idをhiddenで埋め込んでください -->
-        <input type="hidden" name="post_id" value="<?= $post['post_id']; ?>">
+        <input type="hidden" name="post_id" value="<?= h($post['id']); ?>">
             <!-- いいねボタンを書いてください -->
         <button>いいね</button>
         <!-- formタグを閉じてください -->
     </form>
         <!-- いいね数を表示してください -->
-
+    <p>いいね: <?= h($post['like_count']); ?></p>
     <!-- divタグを閉じてください -->
 </div>
     <!-- hrタグで区切り線を引いてください -->
@@ -99,11 +100,11 @@ if(isset($_SESSION['user'])); {
 <?php endforeach; ?>
 <?php
 // postsテーブルの総件数をCOUNT(*)で取得して$totalに入れてください
-$total = COUNT($posts);
+$total = count($posts);
 // $total_pageを計算してください（ceil()で切り上げてください）
 $total_page = ceil($total / $limit);
 // forループでページ番号リンクを表示してください
-for($i=0;$i<=$total_page;$i++) {
+for($i=1;$i<=$total_page;$i++) {
     echo "<a href='?page=$i'>$i</a>";
 }
 // <a href='?page=ページ番号'>ページ番号</a>の形式で出力してください

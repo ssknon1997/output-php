@@ -14,9 +14,9 @@ $password = "root";
 try {
     $pdo = new PDO($dsn, $user, $password);
 
-    $pdo->setAttribute(PDO::ATTER_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
-    echo $e->getMessage;
+    echo $e->getMessage();
     die('接続失敗');
     exit;
 }

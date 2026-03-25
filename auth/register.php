@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     // usersテーブルにname、email、passwordをINSERTするSQLを書いてください
     // プリペアドステートメントを使ってください
-    $sql = "SELECT * FROM users WHERE name=? email=? password=?";
+    $sql = "INSERT INTO users(name, email, password) VALUES(?, ?, ?)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$name, $email, $password]);
     // login.phpにリダイレクトしてexitしてください
