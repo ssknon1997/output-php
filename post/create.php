@@ -35,5 +35,5 @@ $stmt->execute([
     $filename
 ]);
 // ../index.phpにリダイレクトしてexitしてください
-redirect('index.php');
+redirect('../index.php');
 exit;
