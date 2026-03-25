@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     // verifyCsrfToken()でCSRFトークンを検証してください
     verifyCsrfToken();
     // $_POST["name"]を$nameに入れてください
-    $name = filter_input(INPUT_POST, 'name');
+    $name = filter_input(INPUT_POST, 'name'); 
     // $_POST["email"]を$emailに入れてください
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
     // $_POST["password"]をpassword_hashでハッシュ化して$passwordに入れてください
@@ -31,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- h2タグで「新規登録」と表示してください -->
 <h2>新規登録</h2>
 <!-- POSTで送信するformタグを書いてください -->
-<form action="">
+<form  METHOD="POST">
     <!-- CSRFトークンをhiddenで埋め込んでください -->
     <input type="hidden" name="csrf_token" value="<?= $token; ?>">
     <!-- text型のinputを書いてください（name属性はname、placeholder「名前」） -->
