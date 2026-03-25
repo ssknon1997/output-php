@@ -47,7 +47,7 @@ function getPostInt(string $key) : int
 {
     filter_input(INPUT_POST, $key, FILTER_VALIDATE_INT);
 
-    if($key == 'null') {
+    if(!$key) {
         redirect('index.php');
     }
 }
