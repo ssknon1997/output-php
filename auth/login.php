@@ -3,6 +3,7 @@
 session_start();
 // ../config/db.phpをrequire_onceで読み込んでください
 require_once('../config/db.php');
+require_once('../includes/functions.php');
 // $_SERVER["REQUEST_METHOD"]がPOSTの場合だけ以下の処理をしてください
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     // filter_inputでINPUT_POSTからemailを取得して$emailに入れてください
